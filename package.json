@@ -1,0 +1,40 @@
+{
+  "name": "crewpax-backend",
+  "version": "1.0.0",
+  "description": "node.js + koa.js with postgresql for server / backend of CrewPAX mobile app.",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "nodemon src/index.ts",
+    "prod": "node .",
+    "build": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajmross/CrewPAX-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajmross/CrewPAX-backend/issues"
+  },
+  "homepage": "https://github.com/ajmross/CrewPAX-backend#readme",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^7.4.0",
+    "typescript": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.52",
+    "@types/koa-bodyparser": "^4.3.0",
+    "@types/koa-json": "^2.0.18",
+    "@types/koa-logger": "^3.1.1",
+    "@types/koa-router": "^7.0.42",
+    "@types/node": "^12.12.7",
+    "nodemon": "^1.19.4",
+    "ts-node": "^8.5.0"
+  }
+}
