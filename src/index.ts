@@ -20,11 +20,9 @@ app.use(json())
 app.use(logger())
 app.use(bodyParser())
 
-// Index Route
-router.get('/', async (ctx, next) => {
-  ctx.body = { msg: 'Welcome to CrewPAX' }
-
-  await next()
+// Error Handler
+app.on('error', err => {
+  console.log('server error', err)
 })
 
 // Routes
