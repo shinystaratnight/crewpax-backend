@@ -9,6 +9,8 @@ import * as serve from 'koa-static'
 import * as dotenv from 'dotenv'
 import * as path from 'path'
 
+import protectedApiRouters from './api'
+
 dotenv.config({
   path: path.resolve(__dirname, "../.env")
 })
@@ -37,7 +39,7 @@ render(app, {
   debug: false
 })
 
-// Admin Index
+// Admin Routes
 router.get('/', async (ctx: Koa.ParameterizedContext) => {
   await ctx.render('index')
 })
@@ -47,9 +49,15 @@ router.get('/api', async (ctx) => {
   ctx.body = "Welcome to CrewPAX"
 })
 
+router.use(
+  protectedApiRouters.routes(),
+  protectedApiRouters.allowedMethods()
+)
+
 // Routes
 app.use(router.routes()).use(router.allowedMethods())
 
+// Start Server
 const port = process.env.PORT || 3000
 
 app.listen(port, () => {
