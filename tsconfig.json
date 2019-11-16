@@ -5,9 +5,11 @@
     "lib": ["es6"],
     "outDir": "./dist",
     "strict": true,
+    "sourceMap": true,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "esModuleInterop": true,
   },
   "include": ["./src/**/*"]
 }

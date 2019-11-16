@@ -1,6 +1,13 @@
 import { Pool } from 'pg'
+import * as path from 'path'
+import * as dotenv from 'dotenv'
 
-export const dbPool = new Pool({
+// .env
+dotenv.config({
+  path: path.resolve(__dirname, "../.env")
+})
+
+export default new Pool({
   host: process.env.DB_HOST,
   port: Number(process.env.DB_PORT),
   database: process.env.DB_DATABASE,
