@@ -1,6 +1,6 @@
 import { Strategy as jwtStrategy, ExtractJwt } from 'passport-jwt'
 
-module.exports = async (passport: any) => {
+export default async (passport: any) => {
   const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.JWT_SECRET,

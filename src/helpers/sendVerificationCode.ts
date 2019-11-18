@@ -16,7 +16,7 @@ export default async (user: User) => {
       html: html,
     })
     
-    console.log("Email verification code has been successfully sent")
+    console.log("Email verification code has successfully been sent")
     console.log(emailResponse)
   } else if (user.mobile) {
     const message = await sendMobileCode({
@@ -25,9 +25,9 @@ export default async (user: User) => {
       mediaUrl: 'https://climacons.herokuapp.com/clear.png'
     })
     
-    console.log("Phone verification code sent")
+    console.log("Mobile verification code has successfully been sent")
     console.log(message)
   } else {
-    console.log("Incorrect email address or phone number")
+    console.log("Incorrect email address or mobile number")
   }
 }

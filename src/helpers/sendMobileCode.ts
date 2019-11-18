@@ -23,7 +23,6 @@ export default async ({ to, body, mediaUrl }: { to: string, body: string, mediaU
   
     return message
   } catch (err) {
-    // console.log(err)
     return err
   }
 }

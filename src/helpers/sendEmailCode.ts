@@ -26,7 +26,6 @@ export default async ({ to, subject, text, html }: { to: string, subject: string
 
     return emailResponse
   } catch (err) {
-    // console.log(err)
     return err
   }
 }

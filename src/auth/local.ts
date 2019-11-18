@@ -3,12 +3,11 @@ import bcrypt from 'bcryptjs'
 import validator from 'email-validator'
 
 import database from '../database'
-import Connection from '../db/connection'
 import generateCode from '../helpers/generateCode'
 import sendVerificationCode from '../helpers/sendVerificationCode'
 import User from '../models/User'
+import { insertUser } from '../db/queries/users'
 
-const knex = new Connection().knex()
 const BCRYPT_SALT_ROUNDS = 12
 
 export default function (passport: any) {
@@ -25,12 +24,11 @@ export default function (passport: any) {
 
         try {
           const { rows: response } = await client.query(
-            `SELECT * FROM users WHERE email = $1 OR phone = $1`,
+            `SELECT * FROM users WHERE email = $1 OR mobile = $1`,
             [username]
           )
           if (response.length === 0) {
-            console.log("Bad user email or phone number")
-            return done(null, false)
+            return done(null, false, { message: 'Incorrect email address or mobile number' })
           }
 
           const isCorrectPassword = await bcrypt.compare(
@@ -40,12 +38,11 @@ export default function (passport: any) {
 
           if (!isCorrectPassword) {
             console.log("Password is incorrect")
-            return done(null, false)
+            return done(null, false, { message: "Password is incorrect" })
           }
 
           return done(null, response[0])
         } catch (err) {
-          console.error(err)
           return done(err)
         } finally {
           await client.release()
@@ -79,7 +76,7 @@ export default function (passport: any) {
           }
           
           newUser.password = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
-          const user = await knex('users').insert(newUser).returning('id')
+          const user = await insertUser(newUser)
           console.log("New user created")   
 
           sendVerificationCode(newUser)

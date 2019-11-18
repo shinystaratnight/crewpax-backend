@@ -9,6 +9,5 @@ export default class Connection {
 
 function exportConfig(): Config {
   const environment = process.env.NODE_ENV || 'development'
-  console.log("environment:", environment)
   return require('../knexfile')[environment]
 }
