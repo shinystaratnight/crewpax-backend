@@ -1,13 +1,25 @@
 import { Controller, Get, Post } from 'koa-router-ts'
-import passport from 'koa-passport'
+import joi from 'joi'
 
-import localAuth from '../../auth/local'
-import jwtAuth from '../../auth/jwt'
-import { login } from './login'
-import { register } from './register'
+import '../../auth/local'
+import '../../auth/jwt'
+import login from './login'
+import register from './register'
+import validator from '../../helpers/validateSchema'
 
-localAuth(passport)
-// jwtAuth(passport)
+const schema = joi.object()
+  .keys({
+    username: joi.string()
+      .min(7)
+      .max(70)
+      .required(),
+    password: joi.string()
+      .min(6)
+      .regex(/[a-z]/)
+      .regex(/[A-Z]/)
+      .regex(/\d+/)
+      .required()
+  })
 
 @Controller('/api/users')
 export default class {
@@ -17,7 +29,7 @@ export default class {
     return login(ctx, next)
   }
 
-  @Post('/register')
+  @Post('/register', validator(schema))
   async postRegister(ctx: any, next: any) {
     return register(ctx, next)
   }

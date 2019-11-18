@@ -1,10 +1,5 @@
 import nodemailer from 'nodemailer'
-import dotenv from 'dotenv'
-import path from 'path'
-
-dotenv.config({
-  path: path.resolve(__dirname, "../.env")
-})
+import '../lib/env'
 
 export default async ({ to, subject, text, html }: { to: string, subject: string, text: string, html: string }) => {
   try {
