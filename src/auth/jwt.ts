@@ -1,5 +1,4 @@
 import { Strategy as jwtStrategy, ExtractJwt } from 'passport-jwt'
-import * as passport from 'koa-passport'
 
 module.exports = async (passport: any) => {
   const opts = {

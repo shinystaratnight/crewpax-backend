@@ -4,7 +4,7 @@ import logger from 'koa-logger'
 import json from 'koa-json'
 import render from 'koa-ejs'
 import serve from 'koa-static'
-import * as path from 'path'
+import path from 'path'
 import { loadControllers } from 'koa-router-ts'
 
 const app = new Koa()

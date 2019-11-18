@@ -1,6 +1,6 @@
 import { Pool } from 'pg'
-import * as path from 'path'
-import * as dotenv from 'dotenv'
+import path from 'path'
+import dotenv from 'dotenv'
 
 // .env
 dotenv.config({

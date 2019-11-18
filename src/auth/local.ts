@@ -1,10 +1,16 @@
 import { Strategy as LocalStrategy } from 'passport-local'
-import * as bcrypt from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 import validator from 'email-validator'
 
 import database from '../database'
+import Connection from '../db/connection'
+import generateCode from '../helpers/generateCode'
+import sendVerificationCode from '../helpers/sendVerificationCode'
+import User from '../models/User'
 
+const knex = new Connection().knex()
 const BCRYPT_SALT_ROUNDS = 12
+
 export default function (passport: any) {
   passport.use(
     'login',
@@ -55,33 +61,38 @@ export default function (passport: any) {
         passwordField: 'password',
         session: false,
       },
-      (username, password, done) => {
+      async (username, password, done) => {
+        const code = generateCode()
+        
+        let newUser: User = {
+          password: password,
+          verified: false,
+          verification_code: code
+        }
+
         try {
-          if (validator.validate(username)) {
-            console.log("This is email register")
+          const isEmail = validator.validate(username) ? true : false
+          if (isEmail) {
+            newUser.email = username
           } else {
-            console.log("This is a mobile number")
+            newUser.mobile = username
           }
-          // User.findOne({
-          //   where: {
-          //     username: username,
-          //   },
-          // })
-          // .then(user => {
-          //   if (user !== null) {
-          //     console.log('username already exists')
-          //     return done(null, false, { message: 'username already taken' })
-          //   } else {
-          //     bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
-          //       .then(user => {
-          //         console.log('user created')
-          //         return done(null, user)
-          //       })
-          //   }
-          // })
-          done(null, false)
+          
+          newUser.password = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
+          const user = await knex('users').insert(newUser).returning('id')
+          console.log("New user created")   
+
+          sendVerificationCode(newUser)
+          
+          return done(null, user[0])
         } catch (err) {
-          done(err)
+          if (
+            err.constraint === 'users_email_key' ||
+            err.constraint === 'users_phone_key'
+          ) {
+            return done(null, false, { message: 'User with this email address or mobile number already exists'})
+          }
+          return done(err)
         }
       }
     )

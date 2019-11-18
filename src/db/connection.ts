@@ -1,7 +1,7 @@
 import knex from 'knex'
 import { Config } from 'knex'
 
-export class Connection {
+export default class Connection {
   public knex(): knex {
     return knex(exportConfig())
   }
@@ -10,5 +10,5 @@ export class Connection {
 function exportConfig(): Config {
   const environment = process.env.NODE_ENV || 'development'
   console.log("environment:", environment)
-  return require('../../knexfile')[environment]
+  return require('../knexfile')[environment]
 }
