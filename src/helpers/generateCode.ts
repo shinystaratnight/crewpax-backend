@@ -1,7 +1,7 @@
 
 const randomIndex = (min: number, max: number) => Math.floor(Math.random() * (max - min)) + min
 
-export default (length: number = 5) => {
+export default (length: number = 6) => {
   const codeLength = length
   const codeChars = '0123456789'
 
